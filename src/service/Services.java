@@ -29,25 +29,9 @@ public final class Services {
         return listAsNames( db.listPOIs() );
     }
 
-    public static List<String> lisNearbytPOIs(int x, int y, int dMax) {
+    public static List<String> listNearbyPOIs(int x, int y, int dMax) {
         return listAsNames( db.listNearbyPOIs(x, y, dMax) );
     }
 
-    public static void main(String[] args) {
-        addPOI("Lanchonete", 27, 12);
-        addPOI("Posto", 31, 18);
-        addPOI("Joalheria", 15, 12);
-        addPOI("Floricultura", 19, 21);
-        addPOI("Pub", 12, 8);
-        addPOI("Supermercado", 23, 6);
-        addPOI("Churrascaria", 28, 2);
-
-        for (String poi: listPOIs())
-            System.out.println(poi);
-
-        System.out.println();
-
-        for (String poi: lisNearbytPOIs(20, 10, 10))
-            System.out.println(poi);
-    }
+    public static void main(String[] args) {}
 }
