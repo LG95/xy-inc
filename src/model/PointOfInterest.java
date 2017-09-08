@@ -22,4 +22,14 @@ public final class PointOfInterest {
     public int getY() {
         return y;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof PointOfInterest) {
+            PointOfInterest other = (PointOfInterest) o;
+            return this.name.equals(other.name) && this.x == other.x && this.y == other.y;
+        }
+
+        return false;
+    }
 }

@@ -2,13 +2,13 @@ package service;
 
 import model.PointOfInterest;
 import storage.Database;
-import storage.DummyDB;
+import storage.SQLiteDB;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public final class Services {
-    private static final Database db = DummyDB.getInstance();
+    private static final Database db = SQLiteDB.getInstance();
 
     private Services() {}
 

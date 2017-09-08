@@ -2,7 +2,7 @@ package tests;
 
 import model.PointOfInterest;
 import storage.Database;
-import storage.DummyDB;
+import storage.SQLiteDB;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +19,7 @@ public class DatabaseTest {
     private static final PointOfInterest churrascaria = new PointOfInterest("Churrascaria", 28, 2);
     private static final List<PointOfInterest> expectedNearby = Arrays.asList(lanchonete, joalheria, pub, supermercado);
     private static final List<PointOfInterest> expectedListPOIs = Arrays.asList(lanchonete, posto, joalheria, floricultura, pub, supermercado, churrascaria);
-    private static final Database db = DummyDB.getInstance();
+    private static final Database db = SQLiteDB.getInstance();
 
     static {    // Setup for testing
         db.addPOI(lanchonete);
@@ -40,5 +40,4 @@ public class DatabaseTest {
     public void listNearbyPOIs() throws Exception {
         assertEquals(expectedNearby, db.listNearbyPOIs(20, 10, 10));
     }
-
 }
