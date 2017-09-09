@@ -1,5 +1,6 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
+from http.client import HTTPConnection
 from unittest import main as test, TestCase
 
 from model import PointOfInterest
@@ -75,5 +76,59 @@ class ServicesTest(TestCase):
 
 		self.assertEqual(Services.list_nearby("20", "10", "10"),
 						 self.__EXPECTED_NEARBY)
+
+class RESTfulTest(TestCase):
+	""" Class implementing unit tests for the RESTful service. """
+
+	__BASE_URI = "/xy-inc/points"
+	__EXPECTED_NEARBY = ["Lanchonete", "Joalheria", "Pub", "Supermercado"]
+	__EXPECTED_LIST = ["Lanchonete", "Posto", "Joalheria", "Floricultura",
+					   "Pub", "Supermercado", "Churrascaria"]
+
+	def setUp(self):	# type: () -> None
+		""" Prepare the RESTful API for tests. """
+
+		self.__connection = HTTPConnection("localhost", 8080)
+
+		self.__connection.request("GET", self.__BASE_URI + "/add_poi?name=Lanchonete&x=27&y=12")
+		self.__connection.getresponse().read()
+
+		self.__connection.request("GET", self.__BASE_URI + "/add_poi?name=Posto&x=31&y=18")
+		self.__connection.getresponse().read()
+
+		self.__connection.request("GET", self.__BASE_URI + "/add_poi?name=Joalheria&x=15&y=12")
+		self.__connection.getresponse().read()
+
+		self.__connection.request("GET", self.__BASE_URI + "/add_poi?name=Floricultura&x=19&y=21")
+		self.__connection.getresponse().read()
+
+		self.__connection.request("GET", self.__BASE_URI + "/add_poi?name=Pub&x=12&y=8")
+		self.__connection.getresponse().read()
+
+		self.__connection.request("GET", self.__BASE_URI + "/add_poi?name=Supermercado&x=23&y=6")
+		self.__connection.getresponse().read()
+
+		self.__connection.request("GET", self.__BASE_URI + "/add_poi?name=Churrascaria&x=28&y=2")
+		self.__connection.getresponse().read()
+
+	def test_list_pois(self): 	# type: () -> None
+		""" Verify that all inserted points are listed. """
+
+		self.__connection.request("GET", self.__BASE_URI + "/list_pois")
+		response = self.__connection.getresponse().read()
+
+		# remove trailing spaces, convert to string and make a list from each line
+		response = str(response.strip(), "utf-8").splitlines()
+		self.assertEqual(response, self.__EXPECTED_LIST)
+
+	def test_list_nearby(self): 	# type: () -> None
+		""" Verify that the proper nearby points are determined. """
+
+		self.__connection.request("GET", self.__BASE_URI + "/list_nearby?x=20&y=10&d_max=10")
+		response = self.__connection.getresponse().read()
+
+		# remove trailing spaces, convert to string and make a list from each line
+		response = str(response.strip(), "utf-8").splitlines()
+		self.assertEqual(response, self.__EXPECTED_NEARBY)
 
 if __name__ == "__main__": test()
