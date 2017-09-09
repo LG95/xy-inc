@@ -3,6 +3,7 @@
 from unittest import main as test, TestCase
 
 from model import PointOfInterest
+from service import PointOfInterestServices as Services
 from storage import SQLiteDatabase as Database
 
 """ Module containing classes implementing unit tests. """
@@ -21,6 +22,7 @@ class DatabaseTest(TestCase):
 	__EXPECTED_NEARBY = [__LANCHONETE, __JOALHERIA, __PUB, __SUPERMERCADO]
 	__EXPECTED_LIST = [__LANCHONETE, __POSTO, __JOALHERIA, __FLORICULTURA,
 					   __PUB, __SUPERMERCADO, __CHURRASCARIA]
+
 
 	def setUp(self):	# type: () -> None
 		""" Prepare the database for tests. """
@@ -42,6 +44,37 @@ class DatabaseTest(TestCase):
 	def test_list_nearby_pois(self):	# type: () -> None
 		""" Verify that the proper nearby points are determined. """
 
-		self.assertEqual(Database.list_nearby_pois(20, 10, 10), self.__EXPECTED_NEARBY)
+		self.assertEqual(Database.list_nearby_pois(20, 10, 10),
+						 self.__EXPECTED_NEARBY)
 
-if __name__ == '__main__': test()
+class ServicesTest(TestCase):
+	""" Class implementing unit tests for service classes. """
+
+	__EXPECTED_NEARBY = ["Lanchonete", "Joalheria", "Pub", "Supermercado"]
+	__EXPECTED_LIST = ["Lanchonete", "Posto", "Joalheria", "Floricultura",
+					   "Pub", "Supermercado", "Churrascaria"]
+
+	def setUp(self):	# type: () -> None
+		""" Prepare the database for tests. """
+
+		Services.initialize()
+		Services.add_poi("Lanchonete", 27, 12)
+		Services.add_poi("Posto", 31, 18)
+		Services.add_poi("Joalheria", 15, 12)
+		Services.add_poi("Floricultura", 19, 21)
+		Services.add_poi("Pub", 12, 8)
+		Services.add_poi("Supermercado", 23, 6)
+		Services.add_poi("Churrascaria", 28, 2)
+
+	def test_list_pois(self): 	# type: () -> None
+		""" Verify that all inserted points are listed. """
+
+		self.assertEqual(Services.list_pois(), self.__EXPECTED_LIST)
+
+	def test_list_nearby(self): 	# type: () -> None
+		""" Verify that the proper nearby points are determined. """
+
+		self.assertEqual(Services.list_nearby(20, 10, 10),
+						 self.__EXPECTED_NEARBY)
+
+if __name__ == "__main__": test()
