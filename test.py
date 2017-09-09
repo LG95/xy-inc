@@ -23,7 +23,6 @@ class DatabaseTest(TestCase):
 	__EXPECTED_LIST = [__LANCHONETE, __POSTO, __JOALHERIA, __FLORICULTURA,
 					   __PUB, __SUPERMERCADO, __CHURRASCARIA]
 
-
 	def setUp(self):	# type: () -> None
 		""" Prepare the database for tests. """
 
@@ -55,16 +54,16 @@ class ServicesTest(TestCase):
 					   "Pub", "Supermercado", "Churrascaria"]
 
 	def setUp(self):	# type: () -> None
-		""" Prepare the database for tests. """
+		""" Prepare the service for tests. """
 
-		Services.initialize()
-		Services.add_poi("Lanchonete", 27, 12)
-		Services.add_poi("Posto", 31, 18)
-		Services.add_poi("Joalheria", 15, 12)
-		Services.add_poi("Floricultura", 19, 21)
-		Services.add_poi("Pub", 12, 8)
-		Services.add_poi("Supermercado", 23, 6)
-		Services.add_poi("Churrascaria", 28, 2)
+		Services._initialize()
+		Services.add_poi("Lanchonete", "27", "12")
+		Services.add_poi("Posto", "31", "18")
+		Services.add_poi("Joalheria", "15", "12")
+		Services.add_poi("Floricultura", "19", "21")
+		Services.add_poi("Pub", "12", "8")
+		Services.add_poi("Supermercado", "23", "6")
+		Services.add_poi("Churrascaria", "28", "2")
 
 	def test_list_pois(self): 	# type: () -> None
 		""" Verify that all inserted points are listed. """
@@ -74,7 +73,7 @@ class ServicesTest(TestCase):
 	def test_list_nearby(self): 	# type: () -> None
 		""" Verify that the proper nearby points are determined. """
 
-		self.assertEqual(Services.list_nearby(20, 10, 10),
+		self.assertEqual(Services.list_nearby("20", "10", "10"),
 						 self.__EXPECTED_NEARBY)
 
 if __name__ == "__main__": test()
