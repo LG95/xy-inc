@@ -7,7 +7,7 @@ from model import PointOfInterest as POI
 """ Module containing classes to persist data. """
 
 class SQLiteDatabase:
-	""" Class implementing persistence using SQLite. """
+	""" Class implementing persistence of POI using SQLite. """
 
 	__NAME = "points.db"
 
@@ -21,7 +21,7 @@ class SQLiteDatabase:
 
 	@classmethod
 	def add_poi(cls, poi):	# type: (POI) -> None
-		""" Store poi in the database. """
+		""" Store the point poi in the database. """
 
 		try:
 			with connect(cls.__NAME) as connection:
