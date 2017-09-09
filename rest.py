@@ -1,5 +1,6 @@
 from collections.abc import Callable
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from socketserver import ThreadingMixIn
 
 """ Module implementing the RESTful server. """
 
@@ -52,11 +53,16 @@ class RESTfulRequestHandler(BaseHTTPRequestHandler):
 			# send each result in a line by itself
 			for name in result: self.wfile.write(bytes(name, "utf-8") + b"\r\n")
 
+class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
+	""" Class implementing a multithread HTTP server. """
+
+	pass	# only needs inherited behavior
+
 def serve(services, host = "localhost", port = 8080):
 	""" Run a server at host:port exposing methods from services. """
 
 	RESTfulRequestHandler.register(services)
-	httpd = HTTPServer((host, port), RESTfulRequestHandler)
+	httpd = ThreadedHTTPServer((host, port), RESTfulRequestHandler)
 
 	try: httpd.serve_forever()
 	except KeyboardInterrupt: pass
